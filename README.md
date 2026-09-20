@@ -53,3 +53,11 @@ pytest -q
 This proof demonstrates the same class of work as the fixed-scope **AI / LLM Reliability Rescue** starter in [OFFER.md](OFFER.md): reproduce one failing output step, add parsing/validation/failure handling, and return a patch plus regression test.
 
 No performance claims, customer history, or paid-client results are implied by this repository.
+
+## Live AWS proof
+
+- Health: https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/health
+- Interactive docs: https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs
+- Validation endpoint: https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/validate
+
+The public demo is deliberately resource-capped on AWS Lambda: 256 MB memory, 5-second timeout, and reserved concurrency of 1. It is a proof endpoint, not a production SLA.
