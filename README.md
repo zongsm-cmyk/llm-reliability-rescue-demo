@@ -1,5 +1,7 @@
 # LLM Reliability Rescue — Live Proof
 
+[![CI](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml)
+
 This repository is a compact proof of a production problem: LLM output often looks correct until malformed JSON, schema drift, coercion, or wrapper text breaks an application.
 
 The demo uses **no paid LLM API**. It focuses on the reliability layer around model output.
