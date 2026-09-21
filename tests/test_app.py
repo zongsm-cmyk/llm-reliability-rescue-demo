@@ -24,6 +24,7 @@ def test_plain_json_happy_path():
     body = post_raw(json.dumps(VALID)).json()
     assert body["ok"] is True
     assert body["data"]["fit_score"] == 87
+
 def test_fenced_json():
     raw = "```json\n" + json.dumps(VALID) + "\n```"
     assert post_raw(raw).json()["ok"] is True
@@ -47,6 +48,7 @@ def test_wrong_type_is_rejected_not_coerced():
     bad = {**VALID, "fit_score": "87"}
     body = post_raw(json.dumps(bad)).json()
     assert body["ok"] is False
+
 def test_missing_required_field_is_rejected():
     bad = dict(VALID)
     bad.pop("next_action")
@@ -68,3 +70,10 @@ def test_balanced_braces_inside_strings_do_not_break_extraction():
     good = {**VALID, "summary": "Handles braces like {example} safely."}
     raw = "Model output: " + json.dumps(good)
     assert parse_json_object(raw)["summary"].startswith("Handles braces")
+
+def test_multiple_valid_json_objects_are_rejected_as_ambiguous():
+    first = json.dumps(VALID)
+    second = json.dumps({**VALID, "company": "Other Co"})
+    body = post_raw(first + "\n" + second).json()
+    assert body["ok"] is False
+    assert body["error"]["code"] == "AMBIGUOUS_JSON"
