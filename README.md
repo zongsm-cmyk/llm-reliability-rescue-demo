@@ -56,6 +56,12 @@ This proof demonstrates the same class of work as the fixed-scope **AI / LLM Rel
 
 No performance claims, customer history, or paid-client results are implied by this repository.
 
+## Full production-ready kit
+
+Need the packaged implementation rather than the compact proof? The **LLM Reliability Rescue Kit — Python/FastAPI Structured Output Validation & Regression Tests** includes strict Pydantic contracts, FastAPI validation, CLI tooling, a 24-case regression corpus, tests, CI, integration guidance, and production runbooks.
+
+**$19 one-time purchase:** https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit
+
 ## Live AWS proof
 
 - Health: https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/health
