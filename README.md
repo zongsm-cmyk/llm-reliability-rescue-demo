@@ -46,6 +46,10 @@ A valid payload returns `ok: true`. Invalid JSON or schema violations return `ok
 ```bash
 pytest -q
 ```
+## Free JSON validation field guide
+
+[Reproduce five real failure classes locally](docs/llm-json-validation-field-guide.md): valid output, fenced JSON, a strict-type mismatch, ambiguous multiple objects, and malformed JSON. Includes an executable no-API-cost probe and a client-side `ok` check.
+
 ## AWS-ready shape
 
 `app.main:handler` exposes a Mangum adapter so the same FastAPI app can be packaged for AWS Lambda/API Gateway or a Lambda Function URL.
