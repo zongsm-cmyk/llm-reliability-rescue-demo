@@ -60,7 +60,7 @@ No performance claims, customer history, or paid-client results are implied by t
 
 Need the packaged implementation rather than the compact proof? The **LLM Reliability Rescue Kit — Python/FastAPI Structured Output Validation & Regression Tests** includes strict Pydantic contracts, FastAPI validation, CLI tooling, a 24-case regression corpus, tests, CI, integration guidance, and production runbooks.
 
-**$19 one-time purchase:** https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit
+**$19 one-time purchase:** https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=organic&utm_campaign=winner_validation_20261025&utm_content=llm_reliability_demo_readme
 
 ## Live AWS proof
 
