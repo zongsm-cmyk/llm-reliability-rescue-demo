@@ -30,6 +30,16 @@ Target implementation effort is approximately **2–3 hours after written agreem
 
 Full app rewrites, ongoing monitoring, broad security audits, data migrations, complex third-party integrations, account access, live production deployment, API/hosting costs, undocumented feature additions and 24/7 support. If the reproduction or expected result changes the scope materially, **pause and quote a new fixed scope before work**.
 
+## Order through verified Fiverr service listings
+
+You can inspect the active Fiverr offers and contact me **inside Fiverr**:
+
+- [Fix inconsistent LLM JSON outputs](https://www.fiverr.com/mhamedaskoure/fix-inconsistent-json-outputs-in-your-python-llm-api-workflow)
+- [Add strict Pydantic / JSON Schema validation](https://www.fiverr.com/mhamedaskoure/add-reliable-pydantic-json-schema-validation-to-your-python-llm-workflow)
+- [Debug Python / FastAPI / LLM API requests](https://www.fiverr.com/mhamedaskoure/debug-python-fastapi-llm-api-integration-errors-and-failing-requests)
+
+For Fiverr work, use **the Gig's current checkout price and package scope**, or agree to an official custom offer in Fiverr before implementation. The separate **$45 pilot** quoted above is a scope illustration, **not a claim that any active Fiverr package costs $45**. Do not send code, sensitive data, or payment outside Fiverr for a Fiverr order.
+
 ## Working arrangement and proof
 
 - Remote service available from **Morocco**, with **asynchronous written communication**; no calls, personal voice recording or video interviews.
