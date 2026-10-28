@@ -6,6 +6,16 @@ This repository is a compact proof of a production problem: LLM output often loo
 
 The demo uses **no paid LLM API**. It focuses on the reliability layer around model output.
 
+## Hire the service on Fiverr
+
+These three live service listings match the failure modes demonstrated by this repository:
+
+- [Fix inconsistent LLM JSON outputs](https://www.fiverr.com/mhamedaskoure/fix-inconsistent-json-outputs-in-your-python-llm-api-workflow)
+- [Add strict Pydantic / JSON Schema validation](https://www.fiverr.com/mhamedaskoure/add-reliable-pydantic-json-schema-validation-to-your-python-llm-workflow)
+- [Debug Python / FastAPI / LLM API requests](https://www.fiverr.com/mhamedaskoure/debug-python-fastapi-llm-api-integration-errors-and-failing-requests)
+
+**Before ordering:** send a redacted sample, the actual error, the expected behavior, and the runtime/framework version **through Fiverr messages**. Choose the matching live Gig package or request an in-platform custom offer after written scope confirmation. Checkout, payments, order delivery, and revisions for Fiverr orders stay **on Fiverr**. The public demo is technical evidence, not a paid-client endorsement.
+
 ## What this proves
 - Extract a valid JSON object from plain JSON, fenced JSON, or surrounding prose.
 - Never use `eval` or invent missing data.
