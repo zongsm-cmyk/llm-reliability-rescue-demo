@@ -22,7 +22,7 @@ Target implementation effort is approximately **2–3 hours after written agreem
 
 1. **Qualify in writing:** confirm this is a genuine buyer-owned issue with a runnable, safe reproducer; diagnostic scoping is brief and non-implementational.
 2. **Agree in writing before coding:** exact bug, changed files, acceptance test, fixed gross price, one revision and deadline.
-3. **Secure payment terms:** use the hiring platform's funded milestone/escrow where available, or an explicitly agreed invoice and payment due date via an eligible payment method (PayPal preferred where permitted). Payment is not guaranteed merely by posting this offer.
+3. **Secure payment terms:** use the hiring platform's funded milestone/escrow where available, or an explicitly agreed invoice via PayPal: [https://paypal.me/asskoure/45](https://paypal.me/asskoure/45) or [https://paypal.me/asskoure/95](https://paypal.me/asskoure/95) (Recipient: MHAMED ASKOURE / skgsm@live.fr). Payment is not guaranteed merely by posting this offer.
 4. **Implement and test:** deliver a minimal patch, test evidence and written instructions.
 5. **Buyer reviews:** resolve at most one issue within original scope; record acceptance and payment separately.
 
