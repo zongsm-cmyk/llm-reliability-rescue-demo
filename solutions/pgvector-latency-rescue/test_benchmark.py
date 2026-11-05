@@ -23,6 +23,14 @@ def generate_mock_embedding(dim: int = 1536) -> List[float]:
     return (vec / norm).tolist()
 
 
+def test_mock_vector_embedding_generation():
+    """Unit test: verifies mock vector normalization and dimensionality."""
+    vec = generate_mock_embedding(dim=1536)
+    assert len(vec) == 1536
+    norm = float(np.linalg.norm(vec))
+    assert abs(norm - 1.0) < 1e-4, "Mock embedding must be unit-normalized"
+
+
 async def run_latency_benchmark(pool, tenant_id: str, sample_queries: int = 100):
     latencies = []
     logger.info("Executing %d concurrent vector similarity queries...", sample_queries)
