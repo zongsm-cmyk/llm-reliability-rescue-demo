@@ -53,6 +53,8 @@ Detailed architectural breakdowns and reproducible benchmarks:
 * 🎯 [pgvector HNSW Optimization: Scaling Retrieval from 420ms to 24ms under 5M Embeddings](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
 * 🛡️ [Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
 * ⚡ [PostgreSQL RPC Deadlock (40P01) & PostgREST 40001 Retry Storm Remediation](docs/benchmarks/supabase_rpc_concurrency_deadlock_remediation.md)
+* 🤖 [Distributed Deadline Propagation & Anti-Ghost Retry Guard for LLM Proxies](docs/benchmarks/litellm_proxy_retry_deadline_budget_propagation.md)
+* 📊 [PostgreSQL & Vector DB Hosting Benchmark: Supabase vs. Neon vs. Self-Hosted](docs/benchmarks/ai_vector_db_benchmark_supabase_vs_neon.md)
 
 ---
 
