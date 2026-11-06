@@ -28,10 +28,14 @@ All optimizations in this repository are reproducible with zero simulated smoke-
 Need production-hardened implementations deployed directly to your staging or production cluster? We provide ready-to-run zero-touch delivery packages with guaranteed performance SLAs:
 
 ### 1. Instant Digital Packages (Immediate Code & Runbooks):
-* 📦 **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts, FastAPI parser, 24-case regression test corpus.  
+* 📦 **$9 — n8n Workflow Preflight Auditor:** Local JSON schema validation, credential node security, production preflight checklist.  
+  👉 [Buy on Gumroad ($9)](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor) | [Instant PayPal ($9)](https://paypal.me/asskoure/9)
+* 🛡️ **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts, FastAPI parser, 24-case regression test corpus.  
   👉 [Buy on Gumroad ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=readme) | [Instant PayPal ($19)](https://paypal.me/asskoure/19)
+* 🤖 **$24 — Agent Runaway Guard Kit:** Anti doom-loop circuit breakers, token runaway protection, and retry-storm isolation.  
+  👉 [Buy on Gumroad ($24)](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit) | [Instant PayPal ($24)](https://paypal.me/asskoure/24)
 * 🚀 **$95 — Full Resilience & Failover Setup:** Celery retry wrappers, dead-letter deduplication, multi-provider 429 failover router.  
-  👉 [Instant PayPal ($95)](https://paypal.me/asskoure/95)
+  👉 [Buy on Gumroad ($95)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup) | [Instant PayPal ($95)](https://paypal.me/asskoure/95)
 * ⚡ **$129 — PostgreSQL Query Latency Optimization:** Partial indexing DDL, query rewriting, connection pool sizing for < 100ms p95.  
   👉 [Instant PayPal ($129)](https://paypal.me/asskoure/129)
 * 🛡️ **$149 — Enterprise Webhook Ingestion Engine:** HMAC verification, queue buffering, idempotent database state machines.  
