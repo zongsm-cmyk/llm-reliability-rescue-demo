@@ -47,6 +47,14 @@ Need production-hardened implementations deployed directly to your staging or pr
 
 ---
 
+## 📖 In-Depth Production Benchmark Guides & Runbooks
+Detailed architectural breakdowns and reproducible benchmarks:
+* ⚡ [PostgreSQL Query Latency Rescue: Cutting p95 Latency by 94.2% on 12.4M Rows](docs/benchmarks/postgresql_query_latency_rescue.md)
+* 🎯 [pgvector HNSW Optimization: Scaling Retrieval from 420ms to 24ms under 5M Embeddings](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
+* 🛡️ [Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
+
+---
+
 ## 🛠️ Ready-to-Deploy Technical Solutions Included
 
 ### 1. pgvector HNSW Latency Rescue (`solutions/pgvector-latency-rescue/`)
