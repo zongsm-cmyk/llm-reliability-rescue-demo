@@ -1,4 +1,4 @@
-# Production AI & Database Reliability Rescue — Live Proof & Engineering Storefront
+# Python, API & LLM Reliability Rescue — Open Demo and Scoped Repairs
 
 [![CI](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml)
 [![Live AWS Demo](https://img.shields.io/badge/AWS%20Lambda-Live%20API-success)](https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs)
@@ -6,52 +6,37 @@
 
 Production AI applications rarely fail due to the foundational model itself. They crash at the boundary: **malformed LLM outputs**, **pgvector latency spikes**, **database connection exhaustion during bursts**, and **unhandled 429 rate limits**.
 
-This repository serves as an open-source technical proof, benchmark suite, and commercial engineering storefront for production reliability engineering.
+This repository is an engineering demonstration with code and regression tests, plus links to separately scoped commercial repairs. Production behavior and financial outcomes must be verified for each engagement.
 
 ---
 
-## ⚡ Verified Benchmark Evidence
+## What the public evidence establishes
 
-All optimizations in this repository are reproducible with zero simulated smoke-and-mirrors:
+This repository provides code, tests, and example configurations for validating structured LLM output, recovering from certain API failures, and studying PostgreSQL/pgvector behavior. The CI badge reports the status of the automated checks; it is **not** a production SLA or a customer testimonial. The public API health endpoint only indicates basic service responsiveness.
 
-| Target System / Workload | Unoptimized Baseline | Optimized Rescue Architecture | Measured Gain | Verifiable Source Code |
-|:---|:---:|:---:|:---:|:---|
-| **pgvector Cosine Search (1536-dim, 100k docs)** | 420.0 ms | **24.1 ms (p95)** | **94.3% Latency Drop** | [`solutions/pgvector-latency-rescue`](solutions/pgvector-latency-rescue) |
-| **PostgreSQL High-Volume Query Latency** | 1,482.0 ms | **85.8 ms (p95)** | **94.2% Speedup** | [`solutions/resilience-shields`](solutions/resilience-shields) |
-| **LLM Output JSON Parsing & Schema Drift** | 14.8% error rate | **0.0% Parse Failures** | **Deterministic Lock** | [`app/validator.py`](app/validator.py) |
-| **Postgres Deadlocks (40P01) / 429 API Bursts** | Pipeline Crashes | **Auto-Retry & Dual Failover** | **Zero Dropped Events** | [`solutions/resilience-shields`](solutions/resilience-shields) |
+Some historical benchmark notes mention 94% latency reductions, 0% parsing failures, zero lost events, and precise p95/recall numbers. **Those claims have not been independently reproduced against a documented public workload and environment; do not treat them as verified performance results.** The relevant scripts and notes remain available for technical inspection:
 
----
+- [pgvector tests and tuning examples](solutions/pgvector-latency-rescue)
+- [Resilience and retry examples](solutions/resilience-shields)
+- [Structured-output validator](app/validator.py)
+- [Benchmark notes (workload and reproducibility review pending)](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
 
-## 🛒 Fast-Track Commercial Checkout & Instant Delivery
+## Need one Python, API or LLM-JSON defect repaired?
 
-Need production-hardened implementations deployed directly to your staging or production cluster? We provide ready-to-run zero-touch delivery packages with guaranteed performance SLAs:
+**Start with a redacted failing example and an explicit expected result.** We will assess whether the fault fits a bounded patch, agree the acceptance test, deadline and payment terms in writing, and provide a targeted fix plus regression test evidence.
 
-### 1. Instant Digital Packages (Immediate Code & Runbooks):
-* 📦 **$9 — n8n Workflow Preflight Auditor:** Local JSON schema validation, credential node security, production preflight checklist.  
-  👉 [Buy on Gumroad ($9)](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor) | [Instant PayPal ($9)](https://paypal.me/asskoure/9)
-* 🛡️ **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts, FastAPI parser, 24-case regression test corpus.  
-  👉 [Buy on Gumroad ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=readme) | [Instant PayPal ($19)](https://paypal.me/asskoure/19)
-* 🤖 **$24 — Agent Runaway Guard Kit:** Anti doom-loop circuit breakers, token runaway protection, and retry-storm isolation.  
-  👉 [Buy on Gumroad ($24)](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit) | [Instant PayPal ($24)](https://paypal.me/asskoure/24)
-* 🚀 **$95 — Full Resilience & Failover Setup:** Celery retry wrappers, dead-letter deduplication, multi-provider 429 failover router.  
-  👉 [Buy on Gumroad ($95)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup) | [Instant PayPal ($95)](https://paypal.me/asskoure/95)
-* ⚡ **$129 — PostgreSQL Query Latency Optimization:** Partial indexing DDL, query rewriting, connection pool sizing for < 100ms p95.  
-  👉 [Instant PayPal ($129)](https://paypal.me/asskoure/129)
-* 🛡️ **$149 — Enterprise Webhook Ingestion Engine:** HMAC verification, queue buffering, idempotent database state machines.  
-  👉 [Instant PayPal ($149)](https://paypal.me/asskoure/149)
-* 🎯 **$199 — Production pgvector & RAG Rescue Suite:** Concurrent HNSW indexing, asyncpg connection pooling, ef_search tuning, benchmark harness.  
-  👉 [Instant PayPal ($199)](https://paypal.me/asskoure/199)
+- [Scoped Python/API pilot — included and excluded work](OFFER.md): the $45 illustrative pilot scope is **not** a statement that any marketplace package is priced at $45. Confirm the current listing and agreed terms before paying.
+- [Askoure Systems — free 15-minute written triage](https://askoure-systems.floot.app/services/automation-rescue): more involved repairs shown at $99–$199, contingent on the agreed problem and acceptance criteria.
+- [Fiverr: LLM JSON failures](https://www.fiverr.com/mhamedaskoure/fix-inconsistent-json-outputs-in-your-python-llm-api-workflow) · [Pydantic validation](https://www.fiverr.com/mhamedaskoure/add-reliable-pydantic-json-schema-validation-to-your-python-llm-workflow) · [Python / FastAPI debugging](https://www.fiverr.com/mhamedaskoure/debug-python-fastapi-llm-api-integration-errors-and-failing-requests). Marketplace conversations and payments remain inside that marketplace.
 
-*(Direct Merchant: **MHAMED ASKOURE** | Email: `skgsm@live.fr` | Delivery SLA: Automated dispatch within 15 minutes of payment).*
+### Digital code kits (separate from custom implementation)
 
----
+- [n8n Workflow Preflight Auditor](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor)
+- [LLM Reliability Rescue Kit](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit)
+- [Agent Runaway Guard Kit](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit)
+- [Python/API/LLM Failover Setup](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup)
 
-## 📖 In-Depth Production Benchmark Guides & Runbooks
-Detailed architectural breakdowns and reproducible benchmarks:
-* ⚡ [PostgreSQL Query Latency Rescue: Cutting p95 Latency by 94.2% on 12.4M Rows](docs/benchmarks/postgresql_query_latency_rescue.md)
-* 🎯 [pgvector HNSW Optimization: Scaling Retrieval from 420ms to 24ms under 5M Embeddings](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
-* 🛡️ [Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
+The linked storefronts control their own current pricing, licensing, payment and delivery policies. A listing or payment link is not proof that an order was paid, delivered, or accepted. Do not send passwords, API keys or customer records in an issue or first-contact request. **No instant delivery or uninterrupted-service guarantee is asserted.**
 
 ---
 
@@ -59,11 +44,11 @@ Detailed architectural breakdowns and reproducible benchmarks:
 
 ### 1. pgvector HNSW Latency Rescue (`solutions/pgvector-latency-rescue/`)
 - [`pgvector_optimization.sql`](solutions/pgvector-latency-rescue/pgvector_optimization.sql): Non-blocking concurrent HNSW graph builder with tuned `m=16`, `ef_construction=128`, and composite metadata covering index.
-- [`asyncpg_vector_pool.py`](solutions/pgvector-latency-rescue/asyncpg_vector_pool.py): Production async connection pool enforcing runtime `ef_search=64` per session to guarantee 99.2% recall at 24ms.
+- [`asyncpg_vector_pool.py`](solutions/pgvector-latency-rescue/asyncpg_vector_pool.py): Example async connection pool and `ef_search` configuration; latency and recall must be measured on the target dataset.
 - [`test_benchmark.py`](solutions/pgvector-latency-rescue/test_benchmark.py): Automated latency and recall verification harness.
 
 ### 2. Infrastructure Resilience Shields (`solutions/resilience-shields/`)
-- [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Full idempotent wrapper handling Postgres `40P01` deadlock recovery and automatic dual-model failover on OpenAI/Anthropic `429` rate limits.
+- [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Example retry/failover wrapper for selected Postgres `40P01` and provider `429` cases; safe production integration requires testing and observability.
 
 ### 3. Strict LLM Output Extraction Engine (`app/`)
 - Extracts clean JSON objects even when wrapped in markdown blocks, conversational noise, or truncated responses.
@@ -73,14 +58,14 @@ Detailed architectural breakdowns and reproducible benchmarks:
 
 ## 🌐 Live AWS Lambda Proof Endpoints
 
-Verify the core parsing and validation engine running live on serverless AWS Lambda infrastructure:
+Public serverless API routes for inspection. The health route alone does not verify all error paths, uptime or deployment support:
 - **Interactive OpenAPI Documentation:** https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs
 - **Health Check:** https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/health
 - **Validation Engine:** `POST https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/validate`
 
 ---
 
-## 💻 Run and Benchmark Locally
+## 💻 Run tests locally; reproduce benchmarks separately
 
 ```bash
 # Clone the repository
