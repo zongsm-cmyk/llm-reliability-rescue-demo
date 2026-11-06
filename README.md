@@ -52,6 +52,7 @@ Detailed architectural breakdowns and reproducible benchmarks:
 * ⚡ [PostgreSQL Query Latency Rescue: Cutting p95 Latency by 94.2% on 12.4M Rows](docs/benchmarks/postgresql_query_latency_rescue.md)
 * 🎯 [pgvector HNSW Optimization: Scaling Retrieval from 420ms to 24ms under 5M Embeddings](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
 * 🛡️ [Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
+* ⚡ [PostgreSQL RPC Deadlock (40P01) & PostgREST 40001 Retry Storm Remediation](docs/benchmarks/supabase_rpc_concurrency_deadlock_remediation.md)
 
 ---
 
