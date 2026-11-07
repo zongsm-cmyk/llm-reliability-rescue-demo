@@ -23,30 +23,20 @@ All optimizations in this repository are reproducible with zero simulated smoke-
 
 ---
 
-## 🛒 Fast-Track Commercial Checkout & Instant Delivery
+## 🛒 Developer Kits — Direct Gumroad Checkout
 
-Need production-hardened implementations deployed directly to your staging or production cluster? We provide ready-to-run zero-touch delivery packages with guaranteed performance SLAs:
+This public repository is a free technical demonstration. For downloadable packs, review the exact included files, version, compatibility and limitations on the corresponding Gumroad page before paying. The links below lead directly to the seller's currently published listings.
 
-> [!TIP]
-> 🔥 **Developer Launch Special:** Use code **`LAUNCH30`** at Gumroad checkout for **30% OFF** all instant digital toolkits! (Links below pre-apply discount).
+| Offering | Price | What the listing provides |
+| --- | ---: | --- |
+| [n8n Workflow Preflight Auditor](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$9** | Offline checks for exported n8n JSON plus a production checklist; not an official n8n runtime validator. |
+| [LLM Reliability Rescue Kit](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$19** | Python/FastAPI structured-output validation patterns and regression resources. |
+| [Agent Runaway Guard Kit](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$24** | Local guards for repeated tool calls, retry storms and budget limits, with engineering examples. |
+| [Automation ROI Scenario Planner (offline)](https://mhamedasskoure.gumroad.com/l/automation-roi-scenario-planner-offline?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$9** | Offline three-scenario decision planner, CSV export, printable report and pilot brief; estimates only. |
 
-### 1. Instant Digital Packages (Immediate Code & Runbooks):
-* 📦 **$9 — n8n Workflow Preflight Auditor:** Local JSON schema validation, credential node security, production preflight checklist.  
-  👉 [Buy on Gumroad ($6.30 w/ LAUNCH30)](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor/LAUNCH30) | [Instant PayPal ($9)](https://paypal.me/asskoure/9)
-* 🛡️ **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts, FastAPI parser, 24-case regression test corpus.  
-  👉 [Buy on Gumroad ($13.30 w/ LAUNCH30)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit/LAUNCH30) | [Instant PayPal ($19)](https://paypal.me/asskoure/19)
-* 🤖 **$24 — Agent Runaway Guard Kit:** Anti doom-loop circuit breakers, token runaway protection, and retry-storm isolation.  
-  👉 [Buy on Gumroad ($16.80 w/ LAUNCH30)](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit/LAUNCH30) | [Instant PayPal ($24)](https://paypal.me/asskoure/24)
-* 🚀 **$95 — Full Resilience & Failover Setup:** Celery retry wrappers, dead-letter deduplication, multi-provider 429 failover router.  
-  👉 [Buy on Gumroad ($66.50 w/ LAUNCH30)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup/LAUNCH30) | [Instant PayPal ($95)](https://paypal.me/asskoure/95)
-* ⚡ **$129 — PostgreSQL Query Latency Optimization:** Partial indexing DDL, query rewriting, connection pool sizing for < 100ms p95.  
-  👉 [Instant PayPal ($129)](https://paypal.me/asskoure/129)
-* 🛡️ **$149 — Enterprise Webhook Ingestion Engine:** HMAC verification, queue buffering, idempotent database state machines.  
-  👉 [Instant PayPal ($149)](https://paypal.me/asskoure/149)
-* 🎯 **$199 — Production pgvector & RAG Rescue Suite:** Concurrent HNSW indexing, asyncpg connection pooling, ef_search tuning, benchmark harness.  
-  👉 [Instant PayPal ($199)](https://paypal.me/asskoure/199)
+**Need a narrowly scoped code repair?** [Python / API Bug Fix — Commission ($95 total)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme). The seller and buyer agree one reproducible issue, safe redacted input, deliverables and acceptance test before checkout. Gumroad charges **50% at order and 50% at completion**. The seller provides a written diagnosis, patch or documented mitigation, verification and handover within the Gumroad order. The customer applies the code changes. **No remote installation, production deployment, ongoing technical support, or guaranteed recovery time is included.**
 
-*(Direct Merchant: **MHAMED ASKOURE** | Email: `skgsm@live.fr` | Delivery SLA: Automated dispatch within 15 minutes of payment).*
+Do not send access tokens, API keys, passwords or customer production data. The product pages and checkout terms control pricing, delivery, refunds and eligible use. There is **no site-wide discount or guaranteed 15-minute delivery promise** here; do not rely on older campaign links.
 
 ---
 
