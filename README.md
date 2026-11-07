@@ -1,26 +1,24 @@
-# Production AI & Database Reliability Rescue — Live Proof & Engineering Storefront
+# Python/API Reliability — Open-Source Demo & Fixed-Scope Repair
 
 [![CI](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/workflows/ci.yml)
-[![Live AWS Demo](https://img.shields.io/badge/AWS%20Lambda-Live%20API-success)](https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs)
+[![AWS Example Endpoint](https://img.shields.io/badge/AWS-Example%20Endpoint-informational)](https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Production AI applications rarely fail due to the foundational model itself. They crash at the boundary: **malformed LLM outputs**, **pgvector latency spikes**, **database connection exhaustion during bursts**, and **unhandled 429 rate limits**.
 
-This repository serves as an open-source technical proof, benchmark suite, and commercial engineering storefront for production reliability engineering.
+This repository provides inspectable code examples and test resources for debugging Python/FastAPI/JSON/LLM integrations, along with links to fixed-scope paid services. It is **not** evidence of independently verified client production savings.
 
 ---
 
-## ⚡ Verified Benchmark Evidence
+## Evidence: what this repository does and does not prove
 
-All optimizations in this repository are reproducible with zero simulated smoke-and-mirrors:
+| Area | What can be inspected | Limitations |
+| --- | --- | --- |
+| JSON parsing / schema validation | [Python validation code](app/validator.py) and available tests | No independently audited real-client failure-rate claims. |
+| PostgreSQL / pgvector | [Illustrative SQL and Python examples](solutions/pgvector-latency-rescue) | No raw customer dataset, controlled baseline or independently verified p95 reduction supplied here. |
+| API retry / failover patterns | [Resilience examples](solutions/resilience-shields) | Example code, not a zero-data-loss or uptime guarantee. |
 
-| Target System / Workload | Unoptimized Baseline | Optimized Rescue Architecture | Measured Gain | Verifiable Source Code |
-|:---|:---:|:---:|:---:|:---|
-| **pgvector Cosine Search (1536-dim, 100k docs)** | 420.0 ms | **24.1 ms (p95)** | **94.3% Latency Drop** | [`solutions/pgvector-latency-rescue`](solutions/pgvector-latency-rescue) |
-| **PostgreSQL High-Volume Query Latency** | 1,482.0 ms | **85.8 ms (p95)** | **94.2% Speedup** | [`solutions/resilience-shields`](solutions/resilience-shields) |
-| **LLM Output JSON Parsing & Schema Drift** | 14.8% error rate | **0.0% Parse Failures** | **Deterministic Lock** | [`app/validator.py`](app/validator.py) |
-| **Postgres Deadlocks (40P01) / 429 API Bursts** | Pipeline Crashes | **Auto-Retry & Dual Failover** | **Zero Dropped Events** | [`solutions/resilience-shields`](solutions/resilience-shields) |
-
+**Evidence policy:** Historic percentages and “zero failures” language were removed because this repository does not include the measurements needed to substantiate those outcomes. Client performance results require a comparable before/after test with sanitized logs and acceptance criteria.
 ---
 
 ## 🛒 Developer Kits — Direct Gumroad Checkout
@@ -42,24 +40,24 @@ Do not send access tokens, API keys, passwords or customer production data. The 
 
 ## 📖 In-Depth Production Benchmark Guides & Runbooks
 Detailed architectural breakdowns and reproducible benchmarks:
-* ⚡ [PostgreSQL Query Latency Rescue: Cutting p95 Latency by 94.2% on 12.4M Rows](docs/benchmarks/postgresql_query_latency_rescue.md)
-* 🎯 [pgvector HNSW Optimization: Scaling Retrieval from 420ms to 24ms under 5M Embeddings](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
-* 🛡️ [Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
+* [PostgreSQL Query Latency — illustrative method and design notes](docs/benchmarks/postgresql_query_latency_rescue.md)
+* [pgvector HNSW Optimization — method and tuning discussion](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
+* [FastAPI Webhook Ingestion — reliability patterns and test considerations](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
 * ⚡ [PostgreSQL RPC Deadlock (40P01) & PostgREST 40001 Retry Storm Remediation](docs/benchmarks/supabase_rpc_concurrency_deadlock_remediation.md)
 * 🤖 [Distributed Deadline Propagation & Anti-Ghost Retry Guard for LLM Proxies](docs/benchmarks/litellm_proxy_retry_deadline_budget_propagation.md)
 * 📊 [PostgreSQL & Vector DB Hosting Benchmark: Supabase vs. Neon vs. Self-Hosted](docs/benchmarks/ai_vector_db_benchmark_supabase_vs_neon.md)
 
 ---
 
-## 🛠️ Ready-to-Deploy Technical Solutions Included
+## 🛠️ Reference Implementations and Examples Included
 
 ### 1. pgvector HNSW Latency Rescue (`solutions/pgvector-latency-rescue/`)
-- [`pgvector_optimization.sql`](solutions/pgvector-latency-rescue/pgvector_optimization.sql): Non-blocking concurrent HNSW graph builder with tuned `m=16`, `ef_construction=128`, and composite metadata covering index.
-- [`asyncpg_vector_pool.py`](solutions/pgvector-latency-rescue/asyncpg_vector_pool.py): Production async connection pool enforcing runtime `ef_search=64` per session to guarantee 99.2% recall at 24ms.
+- [`pgvector_optimization.sql`](solutions/pgvector-latency-rescue/pgvector_optimization.sql): Example HNSW index and metadata-index settings to test against a real workload before adopting.
+- [`asyncpg_vector_pool.py`](solutions/pgvector-latency-rescue/asyncpg_vector_pool.py): Async connection-pool and search-setting example. Recall and latency must be measured on the target workload.
 - [`test_benchmark.py`](solutions/pgvector-latency-rescue/test_benchmark.py): Automated latency and recall verification harness.
 
 ### 2. Infrastructure Resilience Shields (`solutions/resilience-shields/`)
-- [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Full idempotent wrapper handling Postgres `40P01` deadlock recovery and automatic dual-model failover on OpenAI/Anthropic `429` rate limits.
+- [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Example retry/failover handling for PostgreSQL `40P01` and LLM API `429`; test and adapt before production use.
 
 ### 3. Strict LLM Output Extraction Engine (`app/`)
 - Extracts clean JSON objects even when wrapped in markdown blocks, conversational noise, or truncated responses.
@@ -67,9 +65,9 @@ Detailed architectural breakdowns and reproducible benchmarks:
 
 ---
 
-## 🌐 Live AWS Lambda Proof Endpoints
+## 🌐 Optional AWS Lambda Demo Endpoints
 
-Verify the core parsing and validation engine running live on serverless AWS Lambda infrastructure:
+These URLs are provided for inspection when available; their uptime and current deployment status have not been verified as part of this README update:
 - **Interactive OpenAPI Documentation:** https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/docs
 - **Health Check:** https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/health
 - **Validation Engine:** `POST https://7hjfrxuwyxgke2h7fqhaubykda0benzq.lambda-url.us-east-1.on.aws/validate`
@@ -102,7 +100,10 @@ uvicorn app.main:app --reload
 
 ---
 
-## 🤝 Custom Architecture Audits & On-Demand Implementation
+## 🤝 Paid, Fixed-Scope Help
 
-Need bespoke performance tuning or an on-call engineer to resolve query bottlenecks?  
-Direct inquiries & contracts: **`skgsm@live.fr`** or message on GitHub [@zongsm-cmyk](https://github.com/zongsm-cmyk).
+**One reproducible Python/FastAPI/API issue:** [$95 Gumroad Commission](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) — 50% deposit at checkout after written scope agreement; patch/mitigation, regression check and handover delivered within the order. No remote installation or production access.
+
+**Up to three slow PostgreSQL queries:** [Written $300 audit offer](https://github.com/zongsm-cmyk/postgresql-query-optimization-benchmark) — agreed milestone and sanitized EXPLAIN evidence before starting.
+
+**Ask for a scope check:** [zongsm@gmail.com](mailto:zongsm@gmail.com?subject=Scoped%20Python%20or%20PostgreSQL%20Repair) or message [@zongsm-cmyk](https://github.com/zongsm-cmyk). Do not send secrets, production data or credentials. These are offers, not a claim that a client has purchased or paid.
