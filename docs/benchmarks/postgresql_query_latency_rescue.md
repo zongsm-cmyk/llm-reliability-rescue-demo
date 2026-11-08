@@ -1,80 +1,60 @@
-# Production Benchmark: Cutting PostgreSQL p95 Query Latency from 1,482ms to 85.8ms (-94.2%) on 12.4M Rows
+# PostgreSQL Query Latency: Reproducible Investigation and Index Test
 
-**Author:** MHAMED ASKOURE | Production Engineering Storefront  
-**Target Systems:** High-throughput PostgreSQL (AWS RDS, Supabase, Neon, Self-Hosted)  
-**Production Code:** [`zongsm-cmyk/llm-reliability-rescue-demo`](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo)  
+**Document type:** Engineering method / illustrative example  
+**Evidence status:** No real-client before/after measurements provided.  
+**Applies to:** PostgreSQL, including managed instances where permissions permit EXPLAIN and index operations.
 
----
+## Failure to investigate
 
-## 1. The Production Bottleneck
+A tenant-filtered query with a status predicate and a newest-first sort may scan excessive rows. Do **not** assume an index will help until you inspect the actual query plan, row counts, selectivity, and write load.
 
-During peak traffic surges, analytical and operational queries filtering by multi-tenant status columns (`WHERE tenant_id = $1 AND status = 'processed'`) often degrade severely.
+Illustrative query (table and columns must exist in the target schema):
 
-On an unpartitioned 12.4M row telemetry table, query plans exhibited:
-* **Severe Buffer Thrashing:** 41,289 disk buffer reads per execution.
-* **CPU Pegging:** Database CPU utilization spiked to 88% sustained.
-* **p95 Execution Latency:** 1,482.0 ms per query.
+    SELECT id, user_id, event_name, properties, created_at
+    FROM events
+    WHERE tenant_id = $1 AND status = 'processed'
+    ORDER BY created_at DESC
+    LIMIT 50;
 
-```sql
--- The Problematic Slow Query Pattern
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT id, user_id, event_name, properties, created_at
-FROM events
-WHERE tenant_id = 'tenant_prod_8492'
-  AND status = 'processed'
-ORDER BY created_at DESC
-LIMIT 50;
-```
+## Before measurement
 
----
+1. Capture the exact query, bind values, PostgreSQL version, table cardinality, indexes and row estimates.
+2. Run EXPLAIN (ANALYZE, BUFFERS) in an authorized nonproduction replica with representative data. Beware that ANALYZE actually executes the query; for writes, use an appropriate rollback and read permissions.
+3. Record p50/p95/p99 over representative repeated requests, peak concurrency, buffer reads/hits, CPU, query plan and cache warm-up procedure.
+4. Confirm whether the observed bottleneck is filtering, sorting, joins, lock waiting, storage I/O, or connection exhaustion.
 
-## 2. The 3-Step Zero-Downtime Rescue Architecture
+## Candidate intervention (illustrative, NOT a universal fix)
 
-### Step 1: Partial Composite Covering Index (`INCLUDE` Clause)
-By moving frequently requested payload columns (`user_id`, `properties`) into index leaf pages, the Postgres query planner completely eliminates expensive table heap lookups (Index-Only Scans):
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_events_tenant_processed_created
+      ON events (tenant_id, created_at DESC)
+      WHERE status = 'processed';
 
-```sql
-CREATE INDEX CONCURRENTLY idx_events_analytics_covering
-ON events (tenant_id, created_at DESC)
-INCLUDE (user_id, properties)
-WHERE status = 'processed';
-```
+Run this **outside** a transaction block, only after evaluating additional disk space and index/write overhead. This index is tailored to the stated WHERE/ORDER BY combination; it does not promise an index-only scan because the query also selects columns not included in the index.
 
-### Step 2: Aggressive Autovacuum Scale Factor Tuning
-Default autovacuum settings wait until 20% of table rows are modified before triggering cleanup. On a 12.4M row table, that causes 2.4M dead tuples to bloat indexes:
+Do not indiscriminately INCLUDE large JSONB payload columns or increase work_mem/autovacuum settings without workload evidence. Test optional changes one at a time.
 
-```sql
-ALTER TABLE events SET (
-    autovacuum_vacuum_scale_factor = 0.05,
-    autovacuum_vacuum_cost_limit = 1000,
-    autovacuum_vacuum_cost_delay = 2
-);
-```
+## After measurement and rollback
 
-### Step 3: Runtime Memory & Connection Buffer Pinning
-```sql
-SET work_mem = '64MB';
-```
+Repeat the same query mix with matched input distribution, warm-up, environment and concurrency. Save query plans and raw timings. The gain is measured, not inferred.
+
+| Metric | Before | After | Evidence |
+| --- | --- | --- | --- |
+| p95 response time | not measured here | not measured here | raw samples |
+| Buffer reads/hits | not measured here | not measured here | EXPLAIN buffers |
+| CPU / connection waits | not measured here | not measured here | instance telemetry |
+| Write overhead / index size | not measured here | not measured here | catalog stats |
+
+If the candidate fails acceptance criteria, evaluate a controlled index removal:
+
+    DROP INDEX CONCURRENTLY IF EXISTS idx_events_tenant_processed_created;
+
+Do not execute deployment SQL against a client's system without its authorization and a rollback/maintenance plan. This file is an example, not production certification.
+
 
 ---
 
-## 3. Verified Benchmark Results
+## Evidence and purchasing boundaries
 
-| Metric | Unoptimized Baseline | Covering Partial Index | Gain |
-| :--- | :---: | :---: | :---: |
-| **p95 Latency** | 1,482.0 ms | **85.8 ms** | **-94.2% Speedup** |
-| **Buffer Reads** | 41,289 blocks | **124 blocks** | **-99.7% I/O Drop** |
-| **Database CPU** | 88% Peak | **7% Average** | **92% Headroom Recovered** |
-| **Query Plan** | Seq Scan + Heap Fetch | Index Only Scan | **Deterministic Lock** |
+This document is an engineering method and sample, **not measured customer production results**. No customer data, deployment logs, before/after latency records, or independently verified ROI metrics are supplied here. Validate changes on your own staging workload and capture the measured before/after evidence before claiming a gain.
 
----
-
-## 4. Production Implementation Packages
-
-Need this optimization deployed directly to your staging or production cluster? We provide verified zero-touch delivery packages:
-* ⚡ **$129 — PostgreSQL Query Latency Optimization Package:** Complete DDL, migration runbooks, and rollback blueprints.  
-  👉 [Instant PayPal ($129)](https://paypal.me/asskoure/129)
-* 🛡️ **$19 — LLM Output Reliability & Validation Kit:**  
-  👉 [Buy on Gumroad ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit)
-* 🚀 **$95 — Full Resilience & Dual-Model Failover Setup:**  
-  👉 [Buy on Gumroad ($95)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup)
+For a separate **single, reproducible Python/API code bug**, the published [Gumroad fixed-scope Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) is available after a free written scope check. It is **not** a general infrastructure deployment or an always-on operations service. No payment claim, no guarantee of zero downtime.
