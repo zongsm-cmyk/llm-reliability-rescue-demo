@@ -1,57 +1,56 @@
-# Production Benchmark: Scaling pgvector HNSW Retrieval from 420ms to 24ms (-94.3%) under 5M Embeddings
+# pgvector HNSW: Index Tuning and Recall/Latency Measurement Guide
 
-**Author:** MHAMED ASKOURE | Production Engineering Storefront  
-**Target Systems:** PostgreSQL with pgvector (1536-dim OpenAI, Gemini, Cohere embeddings)  
-**Production Code:** [`zongsm-cmyk/llm-reliability-rescue-demo`](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo)  
+**Document type:** Reproducible engineering guide, not a completed independent benchmark.  
+**Evidence status:** No 5-million-vector dataset, raw recall labels, query logs or before/after measurements are supplied here.
+
+## The real trade-off
+
+Approximate nearest-neighbor search requires measuring both **latency** and **recall**. A low p95 number without recall@k against an exact-search reference does not prove quality. Tenant filters, post-filtering and HNSW search settings can substantially change outcomes.
+
+## Sample index plan
+
+Adapt these examples only after inspecting your schema, extension version, memory and workload. Run CREATE INDEX CONCURRENTLY outside transaction blocks.
+
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_document_embeddings_hnsw_cosine
+      ON document_embeddings USING hnsw (embedding vector_cosine_ops)
+      WITH (m = 16, ef_construction = 128)
+      WHERE is_active = true AND deleted_at IS NULL;
+
+A query intended to use that partial index must include compatible active/deleted predicates. Adjust index choices and HNSW parameters based on real vector distribution. For session-level comparison, test multiple settings such as:
+
+    SET hnsw.ef_search = 64;
+
+This is a candidate configuration, **not** proof of a specific latency or recall result.
+
+## Verification procedure
+
+1. Define corpus size, dimensions, pgvector/Postgres versions, hardware, filters, top_k and an agreed recall target.
+2. Sample representative query embeddings. Compare ANN neighbors with an exact-search reference under a controlled procedure.
+3. Measure p50/p95/p99, recall@k, query throughput, index build time, index size and connection pooling under equivalent load.
+4. Compare candidates fairly, including tenant filtering and cold/warm caches.
+5. Retain raw timing files, recall labels and EXPLAIN plans, then publish numerical claims only if the data supports them.
+
+Existing **illustrative code**, not a measured acceptance certificate:
+- [HNSW SQL candidate](../../solutions/pgvector-latency-rescue/pgvector_optimization.sql)
+- [asyncpg example](../../solutions/pgvector-latency-rescue/asyncpg_vector_pool.py)
+- [synthetic-vector test/benchmark helper](../../solutions/pgvector-latency-rescue/test_benchmark.py)
+
+The sample helper generates random vectors; it does not provide a real-client corpus or a reproducible recall@k ground truth.
+
+| Metric | Baseline | Candidate | Measurement record |
+| --- | --- | --- | --- |
+| p95 latency | pending | pending | raw samples |
+| recall@k | pending | pending | exact-search reference |
+| index size/build time | pending | pending | database telemetry |
+| write/read contention | pending | pending | representative load |
+
+No fixed percentage improvement or sub-25ms outcome is claimed.
+
 
 ---
 
-## 1. The RAG Latency Wall
+## Evidence and purchasing boundaries
 
-As document embedding collections grow beyond 1M chunks, hybrid similarity search (`<=>`) combined with metadata filtering (`WHERE tenant_id = $1`) frequently degrades from sub-30ms to 400ms+:
-* **Unfiltered HNSW Graph Scans:** The database traverses millions of vector nodes before applying the metadata filter, discarding 99% of calculated distances.
-* **Connection Pool Exhaustion:** Concurrent multi-turn reasoning agents hold connections while waiting for similarity searches to complete.
+This document is an engineering method and sample, **not measured customer production results**. No customer data, deployment logs, before/after latency records, or independently verified ROI metrics are supplied here. Validate changes on your own staging workload and capture the measured before/after evidence before claiming a gain.
 
----
-
-## 2. The Solution: Tenant-Partitioned HNSW + Metadata Covering
-
-### 1. Concurrent HNSW Index Construction with Tuned Graph Parameters
-```sql
-CREATE INDEX CONCURRENTLY idx_document_embeddings_hnsw
-ON document_embeddings
-USING hnsw (embedding vector_cosine_ops)
-WITH (m = 16, ef_construction = 128);
-```
-
-### 2. Runtime `ef_search` Tuning per Session
-Set `hnsw.ef_search = 64` during read transactions to achieve **99.2% recall** at **24.1ms** latency without increasing indexing overhead.
-
-```sql
-SET LOCAL hnsw.ef_search = 64;
-```
-
-### 3. Connection Isolation via Dedicated asyncpg Vector Pool
-Enforce isolated connection pools for vector lookups with automatic queue backpressure, preventing vector queries from starving core transactional queries.
-
----
-
-## 3. Verified Benchmark Results (5M Vectors, 1536-dim)
-
-| Metric | Standard HNSW (Unpartitioned) | Optimized Rescue Architecture | Measured Gain |
-| :--- | :---: | :---: | :---: |
-| **p95 Search Latency** | 420.0 ms | **24.1 ms** | **-94.3% Latency Drop** |
-| **Vector Recall Rate** | 94.1% | **99.2%** | **+5.1% Accuracy** |
-| **Active Memory Overhead** | 3.2 GB | **480 MB** | **-85.0% RAM Saved** |
-| **Concurrent Throughput** | 18 QPS | **340 QPS** | **18.8x Scale** |
-
----
-
-## 4. Production Delivery Packages
-
-* 🎯 **$199 — Production pgvector & RAG Rescue Suite:** Complete HNSW indexing DDL, asyncpg pooler, and automated benchmark harness.  
-  👉 [Instant PayPal ($199)](https://paypal.me/asskoure/199)
-* 🛡️ **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts & regression test corpus.  
-  👉 [Buy on Gumroad ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit)
-* 🚀 **$95 — Full Resilience & Dual-Model Failover Setup:**  
-  👉 [Buy on Gumroad ($95)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup)
+For a separate **single, reproducible Python/API code bug**, the published [Gumroad fixed-scope Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) is available after a free written scope check. It is **not** a general infrastructure deployment or an always-on operations service. No payment claim, no guarantee of zero downtime.
