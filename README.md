@@ -32,6 +32,8 @@ This public repository is a free technical demonstration. For downloadable packs
 | [Agent Runaway Guard Kit](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$24** | Local guards for repeated tool calls, retry storms and budget limits, with engineering examples. |
 | [Automation ROI Scenario Planner (offline)](https://mhamedasskoure.gumroad.com/l/automation-roi-scenario-planner-offline?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$9** | Offline three-scenario decision planner, CSV export, printable report and pilot brief; estimates only. |
 
+**Already evaluated the free validator and want the reusable $19 kit?** [Continue directly to Gumroad's secure checkout](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?wanted=true&utm_source=github&utm_medium=demo_readme&utm_campaign=llm_reliability_direct_checkout_20261108). If you have not yet reviewed compatibility, inclusions or license, [read the product listing first](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit). Checkout is hosted by Gumroad; no purchase or refund policy is guaranteed by this repo.
+
 **Need a narrowly scoped code repair?** [Python / API Bug Fix — Commission ($95 total)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme). The seller and buyer agree one reproducible issue, safe redacted input, deliverables and acceptance test before checkout. Gumroad charges **50% at order and 50% at completion**. The seller provides a written diagnosis, patch or documented mitigation, verification and handover within the Gumroad order. The customer applies the code changes. **No remote installation, production deployment, ongoing technical support, or guaranteed recovery time is included.**
 
 Do not send access tokens, API keys, passwords or customer production data. The product pages and checkout terms control pricing, delivery, refunds and eligible use. There is **no site-wide discount or guaranteed 15-minute delivery promise** here; do not rely on older campaign links.
@@ -54,7 +56,7 @@ These are code examples and measurement procedures, **not independently verified
 ### 1. pgvector HNSW Latency Rescue (`solutions/pgvector-latency-rescue/`)
 - [`pgvector_optimization.sql`](solutions/pgvector-latency-rescue/pgvector_optimization.sql): Example HNSW index and metadata-index settings to test against a real workload before adopting.
 - [`asyncpg_vector_pool.py`](solutions/pgvector-latency-rescue/asyncpg_vector_pool.py): Async connection-pool and search-setting example. Recall and latency must be measured on the target workload.
-- [`test_benchmark.py`](solutions/pgvector-latency-rescue/test_benchmark.py): Automated latency and recall verification harness.
+- [`test_benchmark.py`](solutions/pgvector-latency-rescue/test_benchmark.py): Synthetic-vector input test and optional latency measurement helper (no recall@k evidence).
 
 ### 2. Infrastructure Resilience Shields (`solutions/resilience-shields/`)
 - [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Example retry/failover handling for PostgreSQL `40P01` and LLM API `429`; test and adapt before production use.
