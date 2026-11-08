@@ -1,53 +1,48 @@
-# Engineering Blueprint: Building a Zero-Loss FastAPI Webhook Ingestion Engine with <40ms ACKs
+# FastAPI Webhook Ingestion: Durable-ACK and Idempotency Design Checklist
 
-**Author:** MHAMED ASKOURE | Production Engineering Storefront  
-**Target Systems:** Enterprise Webhook Gateways (Stripe, Slack, Linear, GitHub, Custom APIs)  
-**Production Code:** [`zongsm-cmyk/llm-reliability-rescue-demo`](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo)  
+**Document type:** Engineering blueprint, not an independently verified zero-loss system.  
+**Evidence status:** No production traffic, measured acknowledgment latency or end-to-end loss audit is supplied here.
 
----
+## Reliability boundary
 
-## 1. The Production Ingestion Challenge
+An HTTP 2xx response is not proof of downstream processing success. A request can arrive twice, a sender can retry after a timeout, and a worker can crash after making a side effect but before recording completion. This design therefore aims at a **durable at-least-once intake**, not a guarantee of exactly-once effects or zero loss.
 
-When upstream webhooks burst during flash events or scheduled syncs, handling payload parsing, cryptographic validation, and database persistence synchronously inside the request loop leads to:
-* **Worker Thread Starvation:** FastAPI / Uvicorn worker pools get exhausted waiting for slow downstream writes.
-* **HTTP 504 Gateway Timeouts:** Third-party webhook providers drop endpoints after 5-10s timeouts.
-* **Cascading Retries & Double Billing:** Unhandled retries cause duplicate state updates.
+## Minimal safe flow
 
----
+1. Authenticate the source: verify the provider-specific signature over the **raw request body**, using its documented timestamp tolerance and constant-time comparison.
+2. Validate body size and event type; avoid putting payloads or secrets in error logs.
+3. Extract a stable provider event ID and attempt an **atomic insert** into durable storage with a unique constraint on (provider, event_id).
+4. Return a successful acknowledgement only after the transaction confirms durable acceptance. If persistence fails, return an appropriate retryable status according to the provider's contract.
+5. Process accepted events in a worker with idempotent side effects and explicit retry/dead-letter handling.
+6. Audit state transitions: received, queued, processing, succeeded, failed, retried, duplicate.
+7. Handle a crash between side effect and completion acknowledgement; use an idempotency key, transactional outbox or downstream compensation where appropriate.
 
-## 2. The 4 Pillars of Resilient Webhook Ingestion
+## Acceptance test matrix
 
-```mermaid
-flowchart LR
-    A["Incoming Webhook Event"] --> B["FastAPI Ingestion Endpoint"]
-    B --> C{"Cryptographic HMAC Verify"}
-    C -- Valid --> D["Redis Stream Buffer (Sub-40ms ACK)"]
-    C -- Invalid --> E["HTTP 401 Reject"]
-    D --> F["Async Background Consumer"]
-    F --> G["Idempotent DB State Machine"]
-    F -- Error --> H["Dead-Letter Queue (DLQ) + Jitter"]
-```
+| Failure | Required test |
+| --- | --- |
+| Forged or expired signature | reject without creating an event |
+| Duplicate event ID | do not perform the side effect twice |
+| Database unavailable | do not acknowledge durable acceptance |
+| Worker dies after dequeue | recover event from durable queue |
+| Sender retries after lost response | dedupe by stable event ID |
+| Downstream timeout | bounded retry, idempotent side effect |
+| Large payload | enforce body size limit |
+| Slow queue at peak | measure acknowledgement latency and backlog |
 
-### 1. Sub-40ms HTTP 202 Acceptance
-Never process business logic inside the HTTP handler. Immediately buffer raw payloads into Redis Streams and return `HTTP 202 Accepted` in <40ms.
+Record *actual* p50/p95/p99 ACK latency, loss/retry observations, queue length and duplicate side effects. A <40ms acknowledgement or zero-loss claim cannot be made without those measurements.
 
-### 2. Zero-Allocation HMAC Signature Verification
-Verify cryptographic HMAC signatures before decoding full JSON structures to prevent CPU resource exhaustion attacks.
+## Existing related assets
 
-### 3. Distributed 24-Hour Idempotency
-Enforce distributed deduplication on `event_id` or webhook signature to drop duplicates and eliminate double billing.
+- [n8n Workflow Preflight Auditor ($9)](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor): offline **JSON structure** review, **not** live webhook delivery testing.
+- [LLM Reliability Rescue Kit ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit): model-output contracts, **not** a webhook gateway.
+- [Python/API Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission): one scoped coding deliverable, no deployment/hosting.
 
-### 4. Dead-Letter Queue (DLQ) with Decorrelated Full Jitter
-Automatically isolate malformed payloads into an inspection queue with exponential backoff:
-$$\text{Sleep} = \text{uniform}(0, \min(\text{max\_delay}, \text{base} \times 2^{\text{attempt}}))$$
 
 ---
 
-## 3. Production Delivery Packages
+## Evidence and purchasing boundaries
 
-* 🛡️ **$149 — Enterprise Webhook Ingestion Engine:** Drop-in FastAPI + Redis Stream engine with HMAC verification and idempotent state machines.  
-  👉 [Instant PayPal ($149)](https://paypal.me/asskoure/149)
-* 📦 **$9 — n8n Workflow Preflight Auditor:** Local JSON schema validation & production preflight checklist.  
-  👉 [Buy on Gumroad ($9)](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor)
-* 🤖 **$24 — Agent Runaway Guard Kit:** Anti doom-loop circuit breakers & AI cost regression protection.  
-  👉 [Buy on Gumroad ($24)](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit)
+This document is an engineering method and sample, **not measured customer production results**. No customer data, deployment logs, before/after latency records, or independently verified ROI metrics are supplied here. Validate changes on your own staging workload and capture the measured before/after evidence before claiming a gain.
+
+For a separate **single, reproducible Python/API code bug**, the published [Gumroad fixed-scope Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) is available after a free written scope check. It is **not** a general infrastructure deployment or an always-on operations service. No payment claim, no guarantee of zero downtime.
