@@ -14,7 +14,7 @@ This repository provides inspectable code examples and test resources for debugg
 
 | Area | What can be inspected | Limitations |
 | --- | --- | --- |
-| JSON parsing / schema validation | [Python validation code](app/validator.py) and available tests | No independently audited real-client failure-rate claims. |
+| JSON parsing / schema validation | [FastAPI validation code](app/main.py), [strict JSON example](examples/strict_json_decoder.py) and [tests](tests/) | No independently audited real-client failure-rate claims. |
 | PostgreSQL / pgvector | [Illustrative SQL and Python examples](solutions/pgvector-latency-rescue) | No raw customer dataset, controlled baseline or independently verified p95 reduction supplied here. |
 | API retry / failover patterns | [Resilience examples](solutions/resilience-shields) | Example code, not a zero-data-loss or uptime guarantee. |
 
@@ -38,8 +38,8 @@ Do not send access tokens, API keys, passwords or customer production data. The 
 
 ---
 
-## 📖 In-Depth Production Benchmark Guides & Runbooks
-Detailed architectural breakdowns and reproducible benchmarks:
+## 📖 Reproducible Engineering Methods & Test Plans
+These are code examples and measurement procedures, **not independently verified production benchmark results**:
 * [PostgreSQL Query Latency — illustrative method and design notes](docs/benchmarks/postgresql_query_latency_rescue.md)
 * [pgvector HNSW Optimization — method and tuning discussion](docs/benchmarks/pgvector_hnsw_rag_optimization.md)
 * [FastAPI Webhook Ingestion — reliability patterns and test considerations](docs/benchmarks/zero_loss_webhook_ingestion_engine.md)
@@ -60,7 +60,7 @@ Detailed architectural breakdowns and reproducible benchmarks:
 - [`celery_postgres_failover.py`](solutions/resilience-shields/celery_postgres_failover.py): Example retry/failover handling for PostgreSQL `40P01` and LLM API `429`; test and adapt before production use.
 
 ### 3. Strict LLM Output Extraction Engine (`app/`)
-- Extracts clean JSON objects even when wrapped in markdown blocks, conversational noise, or truncated responses.
+- Extracts one unambiguous valid JSON object from Markdown fences or wrapper prose; rejects malformed or truncated JSON without inventing data.
 - Enforces strict Pydantic v2 schemas without unsafe `eval()` or hallucinated fields.
 
 ---
