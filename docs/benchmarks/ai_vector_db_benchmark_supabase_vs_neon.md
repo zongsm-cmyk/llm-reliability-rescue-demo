@@ -1,68 +1,43 @@
-# Production Benchmark: PostgreSQL & Vector DB Hosting (Supabase vs. Neon vs. Self-Hosted)
+# Supabase vs Neon vs Self-Hosted PostgreSQL for RAG — Evaluation Worksheet
 
-**Category:** Cloud Infrastructure & AI Vector Database Architectures  
-**Dataset Scale:** 100,000 to 5,000,000 High-Dimensional Embeddings (1536-dim / OpenAI `text-embedding-3-small`)  
-**Evaluation Scope:** Cold-Start Connection Overhead, HNSW Retrieval Latency (p95), Index Build Time, and Unit Economics  
-**Commercial SLA Delivery:** Production pgvector Optimization Package ($199)
+**Document type:** Vendor-neutral comparison framework.  
+**Evidence status:** This repository does **not** include raw cross-provider benchmark runs or validated current vendor pricing.
 
----
+## What to compare
 
-## 1. Executive Summary & Production Trade-Offs
+The same schema and request mix can behave differently across managed database platforms because compute size, connection pooling, cold starts, network location, storage performance, tenancy and workload limits differ. Never publish a price or latency winner without a dated vendor quote and controlled measurements.
 
-When scaling generative AI applications, semantic search, or RAG systems beyond $1\text{M}$ documents, engineering teams face a critical database hosting decision:
-1. **Supabase (Managed Postgres + pgvector + Supavisor Pooler)**
-2. **Neon (Serverless Postgres with Copy-on-Write Branching)**
-3. **Self-Hosted Dedicated Postgres (Railway, Hetzner, AWS EC2)**
+| Decision factor | Supabase | Neon | Self-hosted |
+| --- | --- | --- | --- |
+| Authentication and integrated platform features | evaluate project needs | evaluate app needs | design and maintain yourself |
+| Branching / environment isolation | verify current plan | verify current plan | design backups and branching |
+| Pooling and concurrent connections | test actual endpoint | test actual endpoint | configure and operate |
+| pgvector version and index features | verify extension | verify extension | verify installed extension |
+| Cold start and p95 under load | measure | measure | measure |
+| Backups, HA and incident response | verify service terms | verify service terms | operator responsibility |
+| Total monthly cost, including egress | obtain current quote | obtain current quote | include labor and hosting |
 
-Online guides typically rely on marketing claims. We executed a reproducible 100,000-query benchmark across all three deployment models under realistic concurrent load.
+## Controlled benchmark design
 
----
+1. Record the same PostgreSQL/pgvector versions where possible, fixed instance size and connection limits.
+2. Generate a fixed synthetic dataset with known seed, embedding dimension, tenant mix, query set and ground-truth neighbor labels. Synthetic results are not customer production claims.
+3. Run warm and cold trials, stable concurrency and a known client region for each candidate.
+4. Capture p50/p95/p99 for inserts and vector searches, recall@k, index build time, connection errors and actual billed resource consumption.
+5. Save full raw samples and config; only then compare price/performance.
 
-## 2. Benchmark Evidence Table
+**Do not interpret differences caused by dissimilar compute tiers as intrinsic differences between providers.**
 
-| Metric / Workload | Supabase (Pro Tier) | Neon Serverless (Scale) | Self-Hosted (Dedicated 4 vCPU / 16GB) |
-|:---|:---:|:---:|:---:|
-| **p95 Cosine Search (100k vectors, HNSW)** | **28.4 ms** | **34.2 ms** | **22.1 ms** |
-| **Cold Connection Latency (No Pooler)** | 185 ms | 240 ms (Scale-from-zero) | 45 ms |
-| **Built-in Session Pooler** | Supavisor (Included) | PgBouncer Proxy (Included) | Custom asyncpg / external |
-| **Zero-Downtime Indexing Support** | Native `CONCURRENTLY` | Native `CONCURRENTLY` | Native |
-| **Monthly Cost Baseline** | $25 / month flat | Usage-based (~$19 - $40) | $15 - $35 / month |
-| **Best Fit Application** | High-velocity AI Apps, Auth + Storage | Ephemeral Staging, PR Branching | Fixed high-throughput production |
+A practical [pgvector indexing guide](pgvector_hnsw_rag_optimization.md) and [SQL examples](../../solutions/pgvector-latency-rescue/pgvector_optimization.sql) are provided separately.
 
----
+## What this page does not establish
 
-## 3. High-Converting Recommendations & Architectural Guidance
+No historical statement that we ran a 100,000-query comparison, achieved a 94% latency reduction, or stress-tested these vendors in client production is evidenced by the repository. We therefore make **none** of those claims, and we do not assert affiliate eligibility or commission amounts.
 
-### 🏆 Top Recommendation for AI Applications: **Supabase**
-* **Why it wins:** Built-in `pgvector` support enabled with one SQL statement, integrated Supavisor connection pooling that prevents `max_connections` exhaustion during LLM bursts, and direct Edge Functions.
-* **Affiliate Referral:** [Deploy on Supabase](https://supabase.com/?ref=askouresystems)
-* **FTC Transparency Disclosure:** *If you upgrade to a paid Supabase plan via this link, we receive a small partner commission at zero extra cost to you. We exclusively recommend infrastructure stress-tested in our production clusters.*
-
-### 🥈 Top Recommendation for CI/CD & Development Branching: **Neon**
-* **Why it wins:** Instant copy-on-write database branches for every PR. Test vector indexing without touching production data.
-* **Affiliate Referral:** [Deploy on Neon](https://neon.tech/?ref=askouresystems)
 
 ---
 
-## 4. Solving the Inherent pgvector Latency Bottleneck
+## Evidence and purchasing boundaries
 
-Regardless of hosting choice, standard `CREATE INDEX USING hnsw` on un-tuned Postgres instances degrades severely as tables cross 1M rows:
-- Default `maintenance_work_mem` causes index builds to spill to disk.
-- Runtime `ef_search` defaults to $40$, dropping recall under high concurrency.
-- Connection limits saturate under parallel LLM agent tool calls.
+This document is an engineering method and sample, **not measured customer production results**. No customer data, deployment logs, before/after latency records, or independently verified ROI metrics are supplied here. Validate changes on your own staging workload and capture the measured before/after evidence before claiming a gain.
 
-We engineered and open-sourced our production HNSW optimization blueprint:
-- Non-blocking concurrent index build with tuned `m=16`, `ef_construction=128`.
-- Runtime async connection pool with dynamic `ef_search=64` per session.
-- 94.3% latency reduction (420ms down to 24.1ms p95).
-
----
-
-## 5. Commercial Toolkits & 24-Hour Production SLA
-
-* 🎯 **$199 — Production pgvector & RAG Rescue Suite:** Ready-to-deploy DDL scripts, asyncpg connection pooler, automated latency verification harness, and 24-hour staging audit.  
-  👉 [Instant PayPal ($199)](https://paypal.me/asskoure/199) | [GitHub Open-Source Demo](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo)
-* 🛡️ **$19 — LLM Reliability Starter Kit:** Strict Pydantic contracts, FastAPI parser, 24-case regression test corpus.  
-  👉 [Buy on Gumroad ($19)](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=benchmark) | [Instant PayPal ($19)](https://paypal.me/asskoure/19)
-
-*(Direct Merchant: **MHAMED ASKOURE** | Email: `skgsm@live.fr` | Delivery SLA: Automated dispatch within 15 minutes of payment).*
+For a separate **single, reproducible Python/API code bug**, the published [Gumroad fixed-scope Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) is available after a free written scope check. It is **not** a general infrastructure deployment or an always-on operations service. No payment claim, no guarantee of zero downtime.
