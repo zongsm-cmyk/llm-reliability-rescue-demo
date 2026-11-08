@@ -1,107 +1,53 @@
-# Production Runbook: Resolving PostgreSQL RPC Deadlocks (40P01) & Serialization Retries (40001) Under PostgREST/Supabase
+# PostgreSQL / Supabase RPC Deadlock and Serialization Retry Runbook
 
-**Author:** MHAMED ASKOURE | Production Engineering Storefront  
-**Target Systems:** High-Concurrency PostgreSQL, Supabase Data API, PostgREST, Multi-Worker Background Tasks  
-**Live Repository:** [`zongsm-cmyk/llm-reliability-rescue-demo`](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo)  
+**Document type:** Engineering test guide for SQLSTATE 40P01 and 40001.  
+**Evidence status:** No measured customer error-rate, CPU or connection recovery statistics are available in this repository.
 
----
+## Failure modes to separate
 
-## 1. The Incident Pattern: 350k+ Error Storms & Stuck CPU
+- **40P01:** deadlock detected; the database aborts one participant to resolve a lock cycle.
+- **40001:** serialization failure; the transaction cannot be committed under the requested isolation constraints.
+- Transient connection or HTTP errors are different failure categories and should not automatically trigger an identical retry.
 
-When background worker agents or client apps execute PL/pgSQL RPC functions via Supabase or PostgREST, optimistic-concurrency rejections frequently raise:
-* `SQLSTATE 40001` (`serialization_failure`)
-* `SQLSTATE 40P01` (`deadlock_detected`)
+Blind retries can amplify load; never retry non-idempotent external side effects without a controlled design.
 
-### The PostgREST Retry Trap
-PostgREST interprets `40001` and `40P01` as **transient infrastructure race conditions** and automatically triggers transaction retries. When developers or agents raise `40001` for deterministic business conflicts (e.g. `active revision changed`), PostgREST enters an unbounded retry storm:
-1. **CPU Exhaustion:** Database CPU spikes to 100% across all available compute cores.
-2. **Log Flooding:** Over 350,000 identical error entries per hour.
-3. **Connection Saturation:** Pooled connections remain blocked, exhausting Knex/asyncpg pools.
+## Investigation procedure
 
-```sql
--- PROBLEMATIC PATTERN (Triggers Unbounded Retries in PostgREST)
-CREATE OR REPLACE FUNCTION update_agent_state(p_job_id UUID, p_expected_rev INT)
-RETURNS VOID AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM agent_jobs WHERE id = p_job_id AND revision = p_expected_rev) THEN
-        -- DANGEROUS: PostgREST sees 40001 and retries forever!
-        RAISE EXCEPTION 'Revision mismatch' USING ERRCODE = '40001';
-    END IF;
-    -- ...
-END;
-$$ LANGUAGE plpgsql;
-```
+1. Capture the exact SQLSTATE, transaction sequence, lock order and sanitized error logs.
+2. Reproduce in staging with the same transaction isolation level, rows and concurrency.
+3. Shorten transactions and make the lock acquisition order consistent across competing operations where possible.
+4. Retry the **whole transaction**, not the final SQL statement alone, after an actual rollback. Use a small bounded attempt count and jitter.
+5. Record attempt numbers, committed/aborted transactions and application-visible outcomes, without logging payload secrets.
 
----
+Illustrative Python-style decision sequence (not a drop-in driver patch):
 
-## 2. The 3-Step Remediation Architecture
+    for attempt in range(MAX_ATTEMPTS):
+        try:
+            with new_transaction() as tx:
+                apply_business_operation(tx)
+            break
+        except DatabaseError as error:
+            if error.sqlstate not in {"40P01", "40001"}:
+                raise
+            if attempt + 1 == MAX_ATTEMPTS:
+                raise
+            sleep_with_bounded_jitter(attempt)
 
-### Step 1: Replace Retried Codes with Domain-Specific SQLSTATE (`PT409`)
-PostgREST maps custom `PT*` error codes to standard HTTP status codes without triggering retry loops. Use `PT409` to return `409 Conflict`:
+**Important:** The example requires an actual database driver, transaction API and idempotency guarantees; none are supplied by this pseudocode.
 
-```sql
--- PRODUCTION-SAFE RPC PATTERN
-CREATE OR REPLACE FUNCTION update_agent_state(p_job_id UUID, p_expected_rev INT)
-RETURNS VOID AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM agent_jobs WHERE id = p_job_id AND revision = p_expected_rev) THEN
-        -- Emits clean HTTP 409 Conflict with zero PostgREST retry storm
-        RAISE SQLSTATE 'PT409' USING MESSAGE = 'Optimistic lock conflict: active revision changed';
-    END IF;
+## Acceptance evidence
 
-    UPDATE agent_jobs
-    SET revision = revision + 1, updated_at = NOW()
-    WHERE id = p_job_id AND revision = p_expected_rev;
-END;
-$$ LANGUAGE plpgsql;
-```
+Report aborts, successful commits, latency percentiles, duplicate side effects and lock-wait statistics for representative load **before and after** the change. Observe pool exhaustion separately; reducing deadlocks does not by itself fix a misconfigured pool.
 
-### Step 2: Concurrency Isolation via `SKIP LOCKED` & Explicit Lock Timeouts
-For queue consumer workers and background runners, eliminate row-level deadlocks (`40P01`) using non-blocking reservation:
+A [standalone synthetic transient-error simulator](../../solutions/resilience-shields/celery_postgres_failover.py) exists in the repo. Its PASS output shows mock branch execution, **not** successful deployment against Supabase/PostgREST production.
 
-```sql
--- Non-blocking queue reservation with strict 2s lock timeout
-SET lock_timeout = '2s';
+No claim is made of 100% error elimination, specific CPU recovery or zero dropped connections.
 
-SELECT id, payload
-FROM agent_task_queue
-WHERE status = 'pending'
-ORDER BY priority DESC, created_at ASC
-FOR UPDATE SKIP LOCKED
-LIMIT 1;
-```
-
-### Step 3: Automated Diagnostic Detection Query
-Detect any procedure in your database that unsafely raises `40001` or `40P01`:
-
-```sql
--- Audit all stored functions for hazardous SQLSTATE codes
-SELECT proname, prosrc
-FROM pg_proc
-JOIN pg_namespace ON pg_namespace.oid = pg_proc.pronamespace
-WHERE nspname NOT IN ('pg_catalog', 'information_schema')
-  AND prosrc ~* "errcode\s*=\s*'40(001|P01)'";
-```
 
 ---
 
-## 3. Verified Production Impact
+## Evidence and purchasing boundaries
 
-| Metric | Unbounded 40001 Retry Loop | PT409 Conflict Control | Impact |
-| :--- | :---: | :---: | :---: |
-| **Error Log Rate** | 356,000 / hr | **0 Retries** | **100% Noise Elimination** |
-| **CPU Utilization** | 100% Sustained | **4% Idle** | **Full Compute Recovery** |
-| **Connection Pool** | Exhausted (100% Wait) | Free (0ms Queue Time) | **Zero Socket Drops** |
-| **HTTP Response** | 500 / 504 Gateway Timeout | **409 Conflict (Clean ACK)** | **Deterministic Client Handling** |
+This document is an engineering method and sample, **not measured customer production results**. No customer data, deployment logs, before/after latency records, or independently verified ROI metrics are supplied here. Validate changes on your own staging workload and capture the measured before/after evidence before claiming a gain.
 
----
-
-## 4. Turnkey Implementation & Staging Packages
-
-Need a dedicated concurrency and database deadlock audit for your production cluster? We provide verified zero-touch delivery packages:
-* ⚡ **$129 — PostgreSQL Concurrency & Deadlock Remediation Pilot:** Complete DDL, migration audit runbooks, and rollback blueprints delivered within 24 hours.  
-  👉 [Book 24-Hour Pilot ($129)](https://paypal.me/asskoure/129)
-* 🚀 **$199 — Production pgvector & RAG Latency Rescue Package:** Complete asyncpg connection pool, HNSW tuning, and sub-30ms retrieval setup.  
-  👉 [Instant PayPal Checkout ($199)](https://paypal.me/asskoure/199)
-* 🛡️ **$95 — Full Resilience & Dual-Model Failover Setup:**  
-  👉 [Buy on Gumroad ($95)](https://mhamedasskoure.gumroad.com/l/python-api-llm-failover-setup)
+For a separate **single, reproducible Python/API code bug**, the published [Gumroad fixed-scope Commission ($95)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) is available after a free written scope check. It is **not** a general infrastructure deployment or an always-on operations service. No payment claim, no guarantee of zero downtime.
