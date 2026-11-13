@@ -21,6 +21,18 @@ This repository provides inspectable code examples and test resources for debugg
 **Evidence policy:** Historic percentages and “zero failures” language were removed because this repository does not include the measurements needed to substantiate those outcomes. Client performance results require a comparable before/after test with sanitized logs and acceptance criteria.
 ---
 
+## Proven repair example — LLM JSON corruption (13 Nov 2026)
+
+A reproducible failure in **this public demonstration** made `POST /validate` silently accept a duplicate `company` JSON key and non-standard numeric values (including `NaN` and `1e999`). That could make an LLM/API integration accept ambiguous or non-finite data as valid.
+
+**Fix:** route JSON extraction through the shared strict decoder; reject duplicate keys at any depth and non-finite numbers as `INVALID_JSON`, including fenced and prose-wrapped outputs. Valid outputs and the existing response format are preserved.
+
+**Check the evidence:** [before/after patch and regression tests](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/pull/5) · [GitHub Actions CI on merged `main` (success)](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/runs/43513079371). Baseline: **21 passing tests**; after repair: **98 passing tests** in the local test run, with CI green on GitHub. These are test counts, **not** a paid-client testimonial or a claim of production improvement.
+
+**Need the same outcome for your own endpoint?** Supply one redacted failing Python/FastAPI/JSON example and an acceptance test. Discuss a **[$95 scoped repair commission](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission)** before payment, or use the [existing Fiverr Python/FastAPI service](https://www.fiverr.com/mhamedaskoure/debug-python-fastapi-llm-api-integration-errors-and-failing-requests) under that listing's actual terms. Work begins only after scope and payment terms are agreed.
+
+---
+
 ## 🛒 Developer Kits — Direct Gumroad Checkout
 
 This public repository is a free technical demonstration. For downloadable packs, review the exact included files, version, compatibility and limitations on the corresponding Gumroad page before paying. The links below lead directly to the seller's currently published listings.
