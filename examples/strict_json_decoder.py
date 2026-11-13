@@ -1,10 +1,11 @@
 """Strict, privacy-safe JSON decoder for reliability-sensitive client integrations.
 
-Standalone example: does not alter the deployed FastAPI endpoint.
+Shared by the FastAPI validation endpoint and standalone examples.
 """
 from __future__ import annotations
 
 import json
+import math
 from typing import Any
 
 
@@ -29,6 +30,18 @@ def _finite_only(token: str) -> Any:
     raise NonFiniteNumberError("Non-finite JSON number")
 
 
+def _finite_float(token: str) -> float:
+    value = float(token)
+    if not math.isfinite(value):
+        raise NonFiniteNumberError("Non-finite JSON number")
+    return value
+
+
 def strict_loads(raw: str) -> Any:
     """Decode JSON without silent key overrides or non-standard numeric values."""
-    return json.loads(raw, object_pairs_hook=_unique_pairs, parse_constant=_finite_only)
+    return json.loads(
+        raw,
+        object_pairs_hook=_unique_pairs,
+        parse_constant=_finite_only,
+        parse_float=_finite_float,
+    )
