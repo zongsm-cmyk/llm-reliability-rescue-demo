@@ -1,8 +1,8 @@
-# Python / API Reliability Rescue — $45 Fixed-Scope Pilot
+# Python / API Reliability Rescue — $95 Fixed-Scope Pilot
 
 **For an active buyer who has one reproducible defect** in an existing Python script, FastAPI/REST endpoint, JSON/CSV validation step, or webhook workflow. This is a paid, bounded bug-fix service, not a claim that this repository has paying customers.
 
-## Included — USD $45 gross
+## Included — USD $95 gross
 
 - Reproduce **one** agreed failure from a buyer-provided redacted/synthetic sample and expected output.
 - Deliver a minimal Python/API validation or error-handling patch within the agreed scope (Pydantic or JSON Schema when appropriate).
@@ -22,11 +22,11 @@ Target implementation effort is approximately **2–3 hours after written agreem
 
 1. **Qualify in writing:** confirm this is a genuine buyer-owned issue with a runnable, safe reproducer; diagnostic scoping is brief and non-implementational.
 2. **Agree in writing before coding:** exact bug, changed files, acceptance test, fixed gross price, one revision and deadline.
-3. **Secure payment terms:** use the hiring platform's funded milestone/escrow where available, or an explicitly agreed invoice via PayPal: [https://paypal.me/asskoure/45](https://paypal.me/asskoure/45) or [https://paypal.me/asskoure/95](https://paypal.me/asskoure/95) (Recipient: MHAMED ASKOURE / skgsm@live.fr). Payment is not guaranteed merely by posting this offer.
+3. **Secure payment terms:** use the hiring platform's funded milestone/escrow where available, or an explicitly agreed invoice via PayPal: [https://paypal.me/asskoure/95](https://paypal.me/asskoure/95) (Recipient: MHAMED ASKOURE / ASKGSM@LIVE.FR). Payment is not guaranteed merely by posting this offer.
 4. **Implement and test:** deliver a minimal patch, test evidence and written instructions.
 5. **Buyer reviews:** resolve at most one issue within original scope; record acceptance and payment separately.
 
-## Excluded from the $45 pilot
+## Excluded from the $95 pilot
 
 Full app rewrites, ongoing monitoring, broad security audits, data migrations, complex third-party integrations, account access, live production deployment, API/hosting costs, undocumented feature additions and 24/7 support. If the reproduction or expected result changes the scope materially, **pause and quote a new fixed scope before work**.
 
@@ -38,7 +38,13 @@ You can inspect the active Fiverr offers and contact me **inside Fiverr**:
 - [Add strict Pydantic / JSON Schema validation](https://www.fiverr.com/mhamedaskoure/add-reliable-pydantic-json-schema-validation-to-your-python-llm-workflow)
 - [Debug Python / FastAPI / LLM API requests](https://www.fiverr.com/mhamedaskoure/debug-python-fastapi-llm-api-integration-errors-and-failing-requests)
 
-For Fiverr work, use **the Gig's current checkout price and package scope**, or agree to an official custom offer in Fiverr before implementation. The separate **$45 pilot** quoted above is a scope illustration, **not a claim that any active Fiverr package costs $45**. Do not send code, sensitive data, or payment outside Fiverr for a Fiverr order.
+For Fiverr work, use **the Gig's current checkout price and package scope**, or agree to an official custom offer in Fiverr before implementation. The separate **$95 pilot** quoted above is a scope illustration, **not a claim that any active Fiverr package costs $95**. Do not send code, sensitive data, or payment outside Fiverr for a Fiverr order.
+
+## Proof of a reproducible fix (13 November 2026)
+
+The [public LLM JSON reliability change](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/pull/5) fixes a demonstrated defect: duplicate JSON keys and non-finite values (`NaN`, `1e999`) previously slipped through `/validate`. The verified update rejects these cases without changing the API response contract. A local baseline of 21 passing tests increased to **98 passing tests**, with [GitHub CI success after merge](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/actions/runs/43513079371). This is synthetic/public-demo evidence, **not** a paid-client project or a guarantee for other systems.
+
+**Paid next step:** one redacted failing payload, expected outcome and agreed acceptance test, then a [$95 scoped Python/API commission](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission) or an agreed Fiverr package. No implementation before written scope and payment terms.
 
 ## Working arrangement and proof
 
