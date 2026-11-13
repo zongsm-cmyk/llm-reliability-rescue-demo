@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-import json
 from json import JSONDecodeError
 from typing import Any, Literal
 
 from fastapi import FastAPI
 from mangum import Mangum
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
+
+from examples.strict_json_decoder import strict_loads
 
 app = FastAPI(
     title="LLM Reliability Rescue Proof",
@@ -74,7 +75,7 @@ def _balanced_object_candidates(text: str):
 def parse_json_object(raw: str) -> dict[str, Any]:
     text = _strip_single_json_fence(raw)
     try:
-        parsed = json.loads(text)
+        parsed = strict_loads(text)
     except JSONDecodeError:
         parsed = None
     else:
@@ -85,7 +86,7 @@ def parse_json_object(raw: str) -> dict[str, Any]:
     valid_objects: list[dict[str, Any]] = []
     for candidate in _balanced_object_candidates(text):
         try:
-            parsed = json.loads(candidate)
+            parsed = strict_loads(candidate)
         except JSONDecodeError:
             continue
         if isinstance(parsed, dict):
