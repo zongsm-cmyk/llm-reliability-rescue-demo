@@ -8,7 +8,7 @@ Production AI applications rarely fail due to the foundational model itself. The
 
 This repository provides inspectable code examples and test resources for debugging Python/FastAPI/JSON/LLM integrations, along with links to fixed-scope paid services. It is **not** evidence of independently verified client production savings.
 
-**Explore our current original developer kits:** [Askoure Systems Shop](https://shop.askouresystems.com/?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_storefront). The shop links to the individual Gumroad listings for checkout and delivery.
+**Explore our current original developer kits:** [English product comparison](https://shop.askouresystems.com/offers/?utm_source=github&utm_medium=organic&utm_campaign=llm_demo_offers). The shop links to the individual Gumroad listings for checkout and delivery.
 
 ---
 
