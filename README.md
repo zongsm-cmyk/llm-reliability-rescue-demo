@@ -37,20 +37,20 @@ A reproducible failure in **this public demonstration** made `POST /validate` si
 
 ## 🛒 Developer Kits — Direct Gumroad Checkout
 
-This public repository is a free technical demonstration. For downloadable packs, review the exact included files, version, compatibility and limitations on the corresponding Gumroad page before paying. The links below lead directly to the seller's currently published listings.
+This is a free, public technical demo. Paid downloads are optional products from Askoure Tools, not prerequisites for running this repository. Review the individual listing's inclusions, license and compatibility before checkout.
 
-| Offering | Price | What the listing provides |
-| --- | ---: | --- |
-| [n8n Workflow Preflight Auditor](https://mhamedasskoure.gumroad.com/l/n8n-workflow-preflight-auditor?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$9** | Offline checks for exported n8n JSON plus a production checklist; not an official n8n runtime validator. |
-| [LLM Reliability Rescue Kit](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$19** | Python/FastAPI structured-output validation patterns and regression resources. |
-| [Agent Runaway Guard Kit](https://mhamedasskoure.gumroad.com/l/agent-runaway-guard-kit?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$24** | Local guards for repeated tool calls, retry storms and budget limits, with engineering examples. |
-| [Automation ROI Scenario Planner (offline)](https://mhamedasskoure.gumroad.com/l/automation-roi-scenario-planner-offline?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme) | **$9** | Offline three-scenario decision planner, CSV export, printable report and pilot brief; estimates only. |
+| Toolkit | Current regular price | Developer promotion | Details |
+| --- | ---: | ---: | --- |
+| [LLM Reliability Rescue Kit](https://mhamedasskoure.gumroad.com/l/lujvp/EARLY30DEV?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_20261124) | $10.00 | **$7.00 with EARLY30DEV** | Python circuit breaker, prioritized provider fallback, SQLite dead-letter queue examples, tests and documentation. |
+| [Agency Tech Master Bundle](https://mhamedasskoure.gumroad.com/l/ktkuv/EARLY30DEV?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_20261124) | $21.90 | **$15.33 with EARLY30DEV** | Bundles the LLM toolkit with the CleanQuote Estimation System and an operations manual. |
+| [Automation ROI Scenario Planner](https://mhamedasskoure.gumroad.com/l/automation-roi-scenario-planner-offline/EARLY30DEV?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_20261124) | $9.00 | **$6.30 with EARLY30DEV** | Offline cost/benefit scenarios, report and pilot planning resources; ROI is not guaranteed. |
+| [CleanQuote Estimation System](https://mhamedasskoure.gumroad.com/l/hblauc?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_20261124) | $14.90 | Regular price | Offline Excel estimator and editable proposal/scope templates. |
 
-**Already evaluated the free validator and want the reusable $19 kit?** [Continue directly to Gumroad's secure checkout](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?wanted=true&utm_source=github&utm_medium=demo_readme&utm_campaign=llm_reliability_direct_checkout_20261108). If you have not yet reviewed compatibility, inclusions or license, [read the product listing first](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit). Checkout is hosted by Gumroad; no purchase or refund policy is guaranteed by this repo.
+**About the coupon:** EARLY30DEV currently applies to the three listed eligible digital products (LLM kit, Agency bundle, ROI planner). It is not a store-wide code, does not apply to custom engineering services, and is not restricted to past buyers. Checkout may add applicable taxes. Confirm the final total before paying.
 
-**Need a narrowly scoped code repair?** [Python / API Bug Fix — Commission ($95 total)](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_readme). The seller and buyer agree one reproducible issue, safe redacted input, deliverables and acceptance test before checkout. Gumroad charges **50% at order and 50% at completion**. The seller provides a written diagnosis, patch or documented mitigation, verification and handover within the Gumroad order. The customer applies the code changes. **No remote installation, production deployment, ongoing technical support, or guaranteed recovery time is included.**
+**Need a narrowly scoped Python/API repair?** [Request a $95 scoped engineering commission](https://mhamedasskoure.gumroad.com/l/python-api-scoped-commission?utm_source=github&utm_medium=organic&utm_campaign=reliability_demo_20261124) after agreement on scope, deliverables, acceptance test and payment terms. Do not send credentials or customer production data.
 
-Do not send access tokens, API keys, passwords or customer production data. The product pages and checkout terms control pricing, delivery, refunds and eligible use. There is **no site-wide discount or guaranteed 15-minute delivery promise** here; do not rely on older campaign links.
+The free code in this repository remains available under its existing license; paid product files are separate and subject to their own included terms.
 
 ---
 
