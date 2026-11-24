@@ -18,6 +18,10 @@ This repository provides inspectable code examples and test resources for debugg
 
 **Free LLM outage diagnostic:** [10-minute provider failure triage runbook](docs/llm-provider-outage-triage.md) — classify 429s/timeouts/invalid outputs, test circuit-breaker and fallback contracts, and compare optional downloadable tooling. The checklist is free; separate paid kits are transparently identified inside.
 
+### Free buyer-journey check before promoting an AI tool
+
+Even correct JSON validation will not fix a broken client intake funnel. We also publish a separate, practical [Instagram walkthrough of a five-point landing-page audit](https://www.instagram.com/alfarouqworks/reel/DfHUqwzj9MZ/?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_audit_bridge_20261124&utm_content=landing_reel) and a [free, no-signup landing-page self-audit](https://askoure-systems.floot.app/tools/landing-page-audit?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_audit_bridge_20261124&utm_content=free_audit). These are marketing-workflow resources, not claims that the Python code here fixes landing-page problems. No paid download is required to use either free resource.
+
 ## Evidence: what this repository does and does not prove
 
 | Area | What can be inspected | Limitations |
