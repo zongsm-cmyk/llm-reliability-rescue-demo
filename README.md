@@ -16,6 +16,8 @@ This repository provides inspectable code examples and test resources for debugg
 
 ---
 
+**Free LLM outage diagnostic:** [10-minute provider failure triage runbook](docs/llm-provider-outage-triage.md) — classify 429s/timeouts/invalid outputs, test circuit-breaker and fallback contracts, and compare optional downloadable tooling. The checklist is free; separate paid kits are transparently identified inside.
+
 ## Evidence: what this repository does and does not prove
 
 | Area | What can be inspected | Limitations |
