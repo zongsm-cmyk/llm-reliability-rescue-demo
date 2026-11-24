@@ -8,6 +8,8 @@ Production AI applications rarely fail due to the foundational model itself. The
 
 This repository provides inspectable code examples and test resources for debugging Python/FastAPI/JSON/LLM integrations, along with links to fixed-scope paid services. It is **not** evidence of independently verified client production savings.
 
+**Fast path from a real failing case to a fix:** Start with the [strict JSON regression tests](tests/) and [reproducible duplicate-key repair](https://github.com/zongsm-cmyk/llm-reliability-rescue-demo/pull/5). If you need a ready-to-use commercial package instead of adapting the free demo, review the [Agency Tech Master Bundle on Gumroad](https://mhamedasskoure.gumroad.com/l/ktkuv?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_crosslink_20261124&utm_content=top_bundle_cta) (listed here at $21.90, confirm checkout total and contents before purchasing). The open-source code remains free; purchasing is optional.
+
 **Explore our current original developer kits:** [English product comparison](https://shop.askouresystems.com/offers/?utm_source=github&utm_medium=organic&utm_campaign=llm_demo_offers). The shop links to the individual Gumroad listings for checkout and delivery.
 
 ---
