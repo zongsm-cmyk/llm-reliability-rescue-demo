@@ -39,6 +39,18 @@ A reproducible failure in **this public demonstration** made `POST /validate` si
 
 ---
 
+## Choose the right reliability package (two different products)
+
+Two separate Gumroad packages use similar names but solve different problems. **Do not confuse the prices or contents:**
+
+| Need | Product | Regular listed price | What it covers |
+| --- | --- | ---: | --- |
+| Validate malformed, fenced, truncated, or schema-invalid LLM JSON in Python/FastAPI | [LLM Reliability Rescue Kit — Structured Output Validation](https://mhamedasskoure.gumroad.com/l/llm-reliability-rescue-kit?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_product_clarity_20261124&utm_content=structured_output_19) | **$19** | Strict Pydantic v2 contracts, 24-case regression corpus, FastAPI endpoints, CLI, validation runbook; separate paid ZIP. |
+| Handle provider outages and failed requests | [LLM Reliability Rescue Kit — Failover, Circuit Breaker & DLQ](https://mhamedasskoure.gumroad.com/l/lujvp?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_product_clarity_20261124&utm_content=failover_10) | **$10** | Provider fallback, circuit breaker, SQLite dead-letter queue examples. Eligible EARLY30DEV discount may apply at checkout. |
+| Pair the $10 resilience examples with the CleanQuote estimation system | [Agency Tech Master Bundle](https://mhamedasskoure.gumroad.com/l/ktkuv?utm_source=github&utm_medium=readme&utm_campaign=omnichannel_product_clarity_20261124&utm_content=bundle_2190) | **$21.90** | The bundle listing details its own contents; **do not assume it contains the separate $19 strict-validation kit**. |
+
+All prices are product-page list prices checked on 24 Nov 2026, exclusive of any applicable taxes; checkout determines the final amount. The open-source demonstration in this repository remains free.
+
 ## 🛒 Developer Kits — Direct Gumroad Checkout
 
 This is a free, public technical demo. Paid downloads are optional products from Askoure Tools, not prerequisites for running this repository. Review the individual listing's inclusions, license and compatibility before checkout.
